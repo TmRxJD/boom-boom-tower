@@ -1,0 +1,2 @@
+# Product
+Three official text-only information sites for the Tower-inspired mini games Boom Boom Tower, Cointraptions (The Incredible Tower), and Orble (Towergle). Readers should understand the game, its control scheme, and development status, then return to Tower Arcade. The user explicitly defers images and gameplay captures. No playable browser build, download, launch date, signup, or readiness promise may be invented. Use Svelte and separate GitHub Pages repositories. Preserve the local game source repositories without publishing private assets or audio.

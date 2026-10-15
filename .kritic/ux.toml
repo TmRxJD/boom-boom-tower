@@ -1,0 +1,22 @@
+ignore = ["^Tower Arcade$", "^Explore the arcade$", "^Back to Tower Arcade$", "^Creator Code"]
+
+[app]
+kind = "web"
+purpose = "Text-only information page for Boom Boom Tower: understand the game, find its development status and control guide, and return to Tower Arcade. The game itself is not published or embedded."
+url = "http://127.0.0.1:5201/boom-boom-tower/"
+viewport = [1440, 1000]
+settle_ms = 300
+
+[[tasks]]
+name = "Find the control guide"
+goal = "Jump to the control guide from the page navigation."
+done = { url = "#controls$" }
+budget = 1
+primary = true
+
+[[tasks]]
+name = "Learn how to play"
+goal = "Jump to the instructions for how this game is played."
+done = { url = "#how-to-play$" }
+budget = 1
+primary = true
