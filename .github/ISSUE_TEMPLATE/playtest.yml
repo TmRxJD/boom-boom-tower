@@ -12,12 +12,12 @@ body:
   - type: input
     id: song
     attributes:
-      label: Song, difficulty, and rough timestamp
+      label: Song, difficulty, and where it happened
       placeholder: Goldbox, Medium, around 1:20
   - type: input
     id: build
     attributes:
-      label: Build and controls
+      label: Game version and controls
       placeholder: 2026-10-21 Windows playtest, Xbox controller
   - type: textarea
     id: system
