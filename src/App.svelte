@@ -1,84 +1,44 @@
 <script lang="ts">
   import site from './site.json';
-  const arcade = 'https://tmrxjd.github.io/tower-game-hub/';
+  const media = `${import.meta.env.BASE_URL}media/`;
+  let playing = $state<string | null>(null);
+  const loops = [
+    { id:'rhythm', title:'Follow the melody', text:'Four colors, flowing patterns, and fireworks on every hit.' },
+    { id:'eclipse', title:'Bring the bonuses together', text:'Save Golden Tower and Black Hole for a spectacular overlap.' },
+  ];
+  const shots = [
+    { file:'songs', title:'Find your next song', text:'Separate libraries, favorites, and four difficulties where available.' },
+    { file:'playlists', title:'Keep the music going', text:'Build a playlist and move straight into the next song.' },
+    { file:'collection', title:'Collect the fireworks', text:'Earn new explosions, then choose which ones appear during play.' },
+  ];
 </script>
-
 <svelte:head>
-  <title>{site.title} | Tower Arcade</title>
-  <meta property="og:title" content={site.title} />
-  <meta property="og:description" content={site.summary} />
+  <title>Boom Boom Tower — Windows playtest</title>
+  <meta property="og:title" content="Boom Boom Tower" />
+  <meta property="og:description" content="Hit the melody. Light up the sky. Download the Windows playtest." />
+  <meta property="og:image" content="https://tmrxjd.github.io/boom-boom-tower/media/icon-art.webp" />
   <meta property="og:type" content="website" />
 </svelte:head>
-
-<div class="site" style={`--accent:${site.accent}`}>
-  <a class="skip" href="#main">Skip to main content</a>
-  <header class="masthead">
-    <a class="arcade-link" href={arcade}>Tower Arcade</a>
-    <nav aria-label="Page sections"><a href="#about">About</a><a href="#how-to-play">How to play</a><a href="#controls">Controls</a></nav>
-  </header>
-  <main id="main" tabindex="-1">
-    <section class="hero" aria-labelledby="game-title">
-      <div>
-        <h1 id="game-title">{site.title}</h1>
-        {#if site.alias}<p class="alias">{site.alias}</p>{/if}
-        <p class="premise">{site.premise}</p>
-        <p class="summary">{site.summary}</p>
-        <div class="hero-links">{#if site.playUrl}<a class="primary" href={site.playUrl}>Play {site.title}</a>{:else}<a class="primary" href="#how-to-play">How to play</a>{/if}<a class="quiet" href={arcade}>Explore the arcade</a></div>
-      </div>
-      <aside class="availability" aria-labelledby="status-title">
-        <p class="genre">{site.genre}</p>
-        <h2 id="status-title">{site.playUrl ? 'Play in your browser' : 'In development'}</h2>
-        <p>{site.availability}</p>
-        {#if !site.playUrl}<p class="preview-note">Gameplay images and videos will come later.</p>{/if}
-      </aside>
-    </section>
-    <section class="content-section" id="about" aria-labelledby="about-title">
-      <h2 id="about-title">About the game</h2>
-      <div class="prose">
-        {#each site.about as paragraph}<p>{paragraph}</p>{/each}
-        <ul class="features">{#each site.features as feature}<li><strong>{feature.title}</strong><p>{feature.text}</p></li>{/each}</ul>
-      </div>
-    </section>
-    <section class="content-section" id="how-to-play" aria-labelledby="play-title">
-      <h2 id="play-title">How to play</h2>
-      <ol class="steps">{#each site.steps as step}<li><h3>{step.title}</h3><p>{step.text}</p></li>{/each}</ol>
-    </section>
-    <section class="content-section" id="controls" aria-labelledby="controls-title">
-      <h2 id="controls-title">Control guide</h2>
-      <div><dl>{#each site.controls as control}<div class="control"><dt>{control.input}</dt><dd>{control.action}</dd></div>{/each}</dl><p class="control-note">{site.controlNote}</p></div>
-    </section>
-  </main>
-  <footer>
-    <div><a class="arcade-link" href={arcade}>Back to Tower Arcade</a><p>Independent fan game inspired by The Tower.<br />Not affiliated with Tech Tree Games.</p></div>
-    <a class="creator" href="https://store.techtreegames.com/thetower/" target="_blank" rel="noopener noreferrer" aria-label="Creator Code JDEVO, opens in a new tab"><span>Creator Code</span><strong>JDEVO</strong></a>
-  </footer>
-</div>
-
+<a class="skip" href="#main">Skip to content</a>
+<header><a class="brand" href="#main"><img src={`${media}icon-64.png`} alt="" width="36" height="36" />Boom Boom Tower</a><nav aria-label="Page sections"><a href="#examples">Gameplay</a><a href="#guide">How to play</a><a href={site.feedbackUrl}>Feedback</a></nav></header>
+<main id="main" tabindex="-1">
+  <section class="hero" aria-labelledby="title">
+    <div><p class="release">Windows playtest</p><h1 id="title">BOOM BOOM<br /><span>TOWER</span></h1><p class="lead">Hit the melody.<br />Light up the sky.</p><p class="intro">A four-button rhythm game where every song becomes a fireworks show. Learn the patterns, hold the long notes, and time your bonuses for the big finish.</p><a class="download" href={site.downloadUrl}>Download for Windows <span aria-hidden="true">↓</span></a><p class="small">Windows 10 / 11 · 64-bit · Free playtest<br />Includes 10 original tracks with music. <a href="#audio">More songs</a></p><a class="text-link" href={site.feedbackUrl}>Tried it? Tell us how it felt.</a></div>
+    <figure class="art"><img src={`${media}icon-art.webp`} width="768" height="768" alt="A cyan tower with pink and gold fireworks against a galaxy" fetchpriority="high" /><figcaption>Icon artwork. Gameplay below.</figcaption></figure>
+  </section>
+  <section id="examples" class="section" aria-labelledby="examples-title">
+    <div class="heading"><h2 id="examples-title">Small inputs.<br />A sky full of fireworks.</h2><p>Actual Windows gameplay captures. Start an example to play its short GIF loop.</p></div>
+    <div class="loops">{#each loops as loop}<figure><div class="frame"><img src={`${media}${loop.id}.${playing === loop.id ? 'gif' : 'webp'}`} width="640" height="360" alt={loop.title + ' — gameplay capture'} loading="lazy" /></div><figcaption><div><h3>{loop.title}</h3><p>{loop.text}</p></div><button onclick={() => playing = playing === loop.id ? null : loop.id} aria-pressed={playing === loop.id}>{playing === loop.id ? 'Stop example' : 'Play example'}</button></figcaption></figure>{/each}</div>
+    <div class="screenshots">{#each shots as shot}<figure><a href={`${media}${shot.file}.webp`} aria-label={`View full screenshot: ${shot.title}`}><img src={`${media}${shot.file}.webp`} alt={shot.title + ' — game menu screenshot'} width="1280" height="720" loading="lazy" /></a><figcaption><h3>{shot.title}</h3><p>{shot.text}</p></figcaption></figure>{/each}</div>
+  </section>
+  <section id="guide" class="section split" aria-labelledby="guide-title"><div><p class="release">Quick start</p><h2 id="guide-title">Get into your<br />first song.</h2><p>This playtest runs as a Windows app. A browser version is not available yet.</p><p><a class="download" href={site.downloadUrl}>Download for Windows <span aria-hidden="true">↓</span></a></p><a class="text-link" href={`${import.meta.env.BASE_URL}guide.txt`}>Download the plain-text guide</a></div><ol><li><h3>Download and extract</h3><p>Extract the entire ZIP into a folder you can write to. Keep the files together, then open <strong>Play.exe</strong>. Play.cmd is also included.</p></li><li><h3>Choose a song</h3><p>The 10 original tracks in Songs are ready to play. For other songs, the audio panel opens when a recording is missing. Choose your file and check the timing prompt.</p></li><li><h3>Find your rhythm</h3><p>Try Easy first. Practice mode lets you slow the music and play without failing. Autoplay shows how a song flows.</p></li></ol></section>
+  <section class="section split" aria-labelledby="controls-title"><div><h2 id="controls-title">Four colors.<br />Both hands welcome.</h2><p>Keyboard and controller are supported. Change controls in Options. On a controller, follow the button hints along the bottom of each screen.</p></div><div><div class="keys"><span class="yellow"><kbd>↑</kbd><small>Yellow</small></span><span class="red"><kbd>→</kbd><small>Red</small></span><span class="green"><kbd>↓</kbd><small>Green</small></span><span class="blue"><kbd>←</kbd><small>Blue</small></span></div><dl><div><dt>Rockets</dt><dd>Arrow keys or W / D / S / A</dd></div><div><dt>Hold notes</dt><dd>Keep the matching input pressed through the tail</dd></div><div><dt>Golden Tower</dt><dd>Space or left Shift</dd></div><div><dt>Black Hole</dt><dd>Left Ctrl or B</dd></div><div><dt>Pause</dt><dd>Escape</dd></div></dl><p class="small">Regular hits build Golden Tower. Holds charge Black Hole. Save both to multiply their bonuses together.</p></div></section>
+  <section id="audio" class="section split" aria-labelledby="audio-title"><div><h2 id="audio-title">Your music.<br />Ready-made patterns.</h2><p>The 10 original tracks include their music. Recordings for Tower OST, Boom Boom Rocket originals, and custom songs are not included. Bring a copy you have permission to play; the game gives you visible search terms and a Copy button.</p></div><div class="answers"><details open><summary>How do I add or change a recording?</summary><p>Select a song and choose Add audio or Edit audio. Upload a local recording, replace it, or unlink it. The waveform check looks for matching passages and leading silence; uncertain matches ask you to confirm. Use the same song version.</p></details><details><summary>Can I use YouTube?</summary><p>Paste a link in the song’s audio panel. YouTube needs an internet connection and Microsoft Edge WebView2. Local audio is best for consistent timing. YouTube timing needs manual confirmation.</p></details><details><summary>Can I import more songs?</summary><p>Use Import for compatible song packs, BeatSaver links or keys, and supported Beat Saber ZIPs from GitHub. The game builds available difficulties and asks before leaving out versions with too little distinct detail.</p></details><details><summary>Where are my scores?</summary><p>Scores and settings stay in the user folder beside the game. Keep that folder when upgrading. This public playtest uses local scores; online submissions are disabled.</p></details><details><summary>What does this test release need?</summary><p>A 64-bit Windows 10 or 11 PC with a modern graphics driver. If a VCRUNTIME DLL is missing, install the <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">Microsoft Visual C++ x64 runtime</a>. Optional YouTube playback also needs <a href="https://developer.microsoft.com/microsoft-edge/webview2/">WebView2</a>. This is an unsigned test build.</p></details></div></section>
+  <section class="feedback" aria-labelledby="feedback-title"><div><p class="release">Help shape the next build</p><h2 id="feedback-title">How did it feel?</h2><p>A song, difficulty, rough timestamp, and what happened are the most useful details. Tell us about awkward patterns, missing melody notes, controller navigation, or slowdowns.</p></div><a class="download" href={site.feedbackUrl}>Share feedback <span aria-hidden="true">↗</span></a></section>
+</main>
+<footer><a href="https://tmrxjd.github.io/tower-game-hub/">Back to Tower Arcade</a><p>Independent fan game inspired by The Tower and Boom Boom Rocket.<br />Not affiliated with their creators.</p><a href="https://github.com/TmRxJD/boom-boom-tower/releases">Release notes and downloads</a></footer>
 <style>
-  :global(*){box-sizing:border-box}
-  :global(html){color-scheme:dark;scroll-padding-top:24px}
-  :global(body){margin:0;background:#0b1016;color:#f1f4ea;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
-  :global(a){color:inherit;text-underline-offset:5px}
-  :global(a:focus-visible){outline:2px solid var(--accent,#f1f4ea);outline-offset:5px;border-radius:2px}
-  :global(::selection){color:#0b1016;background:#f1f4ea}
-  .site{max-width:1248px;padding:0 clamp(20px,5vw,64px);margin:0 auto}
-  .skip{position:absolute;left:20px;top:-100px;z-index:2;background:#f1f4ea;color:#0b1016;padding:10px 16px}.skip:focus{top:12px}
-  .masthead{display:flex;justify-content:space-between;align-items:center;gap:24px;min-height:96px;border-bottom:1px solid #354038}
-  .arcade-link{display:inline-flex;align-items:center;min-height:44px;color:var(--accent);font-weight:650;text-decoration:none}
-  nav{display:flex;gap:28px;flex-wrap:wrap}nav a{display:inline-flex;align-items:center;min-height:44px;text-decoration:none;color:#c8d2cb}nav a:hover,.quiet:hover{text-decoration:underline;color:#f1f4ea}
-  .hero{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(240px,1fr);gap:clamp(32px,6vw,80px);padding:72px 0 70px;align-items:end}
-  h1{font-size:clamp(44px,7.4vw,94px);line-height:1.02;letter-spacing:-.035em;font-weight:700;margin:0;max-width:14ch;text-wrap:balance}
-  .alias{font-size:15px;color:#bac7bf;margin:18px 0 0}
-  .premise{font-size:clamp(22px,2.5vw,30px);line-height:1.35;font-weight:550;max-width:26ch;margin:28px 0 18px;color:var(--accent)}
-  .summary{font-size:18px;line-height:1.7;color:#c8d2cb;max-width:48ch;margin:0}
-  .hero-links{display:flex;align-items:center;flex-wrap:wrap;gap:16px 24px;margin-top:32px}.primary{display:inline-flex;align-items:center;min-height:48px;padding:10px 20px;border-radius:6px;background:var(--accent);color:#0b1016;font-weight:700;text-decoration:none}.primary:hover{filter:brightness(1.08)}.quiet{display:inline-flex;align-items:center;min-height:44px;color:#d2dcd5;text-decoration:none}
-  .availability{border-top:2px solid var(--accent);padding-top:22px}.genre{margin:0 0 10px;color:var(--accent);font-size:15px;font-weight:600}.availability h2{font-size:26px;margin:0 0 12px;line-height:1.3}.availability p{color:#c8d2cb;margin:0 0 18px}.availability .preview-note{font-size:15px;color:#bac7bf;margin-bottom:0}
-  .content-section{display:grid;grid-template-columns:minmax(150px,1fr) minmax(0,2.2fr);gap:64px;border-top:1px solid #354038;padding:48px 0;scroll-margin-top:24px}
-  h2{font-size:26px;line-height:1.35;font-weight:650;letter-spacing:-.02em;margin:0}h3{font-size:19px;line-height:1.5;font-weight:650;margin:0 0 8px}
-  .prose{max-width:65ch}.prose>p{color:#c8d2cb;margin:0 0 20px}.features{list-style:none;margin:30px 0 0;padding:0}.features li+li{margin-top:22px}.features strong{font-size:18px;color:#f1f4ea}.features p{margin:4px 0 0;color:#bac7bf}
-  .steps{padding-left:24px;margin:0;max-width:65ch}.steps li{padding-left:12px}.steps li+li{margin-top:28px}.steps li::marker{color:var(--accent);font-weight:650}.steps p{color:#c8d2cb;margin:0}
-  dl{margin:0}.control{display:grid;grid-template-columns:minmax(130px,1fr) minmax(0,2fr);gap:24px;padding:18px 0;border-bottom:1px solid #28332d}.control:first-child{padding-top:0}dt{font-weight:650;color:#f1f4ea}dd{margin:0;color:#c8d2cb}.control-note{font-size:15px;color:#bac7bf;margin:22px 0 0}
-  footer{border-top:1px solid #354038;display:flex;justify-content:space-between;align-items:flex-start;gap:32px;padding:32px 0 42px}footer p{color:#bac7bf;font-size:14px;line-height:1.7;margin:8px 0 0}.creator{display:inline-flex;flex-direction:column;justify-content:center;min-height:44px;text-decoration:none;padding:4px 0}.creator span{font-size:13px;line-height:1.3;color:#bac7bf}.creator strong{font-size:19px;line-height:1.5;color:var(--accent)}
-  @media(max-width:760px){.hero{grid-template-columns:1fr;padding:42px 0;gap:36px}.availability{max-width:65ch}.content-section{grid-template-columns:1fr;gap:24px;padding:36px 0}.masthead{align-items:flex-start;flex-direction:column;gap:0;padding:16px 0}nav{gap:24px}.hero-links{gap:12px 20px}footer{flex-wrap:wrap}}
-  @media(max-width:420px){.control{grid-template-columns:1fr;gap:6px}.summary{font-size:17px}nav{gap:20px}.primary{padding:10px 16px}}
+  :global(*){box-sizing:border-box}:global(html){scroll-behavior:smooth;scroll-padding-top:2rem}:global(body){margin:0;background:#050711;color:#f1f1fa;font-family:'Segoe UI',system-ui,sans-serif;line-height:1.65}:global(a){color:inherit;text-underline-offset:.25em}:global(button){font:inherit}:global(a:focus-visible),:global(button:focus-visible),:global(summary:focus-visible){outline:3px solid #40eaff;outline-offset:5px}:global(h1),:global(h2),:global(h3),:global(p),:global(figure){margin:0}:global(img){max-width:100%;display:block}:global(h2){font-size:clamp(2rem,3.4vw,3.2rem);line-height:1.12;letter-spacing:-.04em}:global(h3){font-size:1.1rem;line-height:1.3}:global(p){color:#acb3c8}header,main,footer{max-width:1320px;margin:auto;padding-inline:clamp(1.25rem,5vw,4.5rem)}header{display:flex;align-items:center;justify-content:space-between;gap:2rem;padding-block:1.5rem}.brand{display:flex;align-items:center;gap:.7rem;text-decoration:none;font-weight:700}.brand img{border-radius:6px}nav{display:flex;gap:1.8rem;font-size:.9rem}nav a{text-decoration:none;color:#b8c1d9}.skip{position:fixed;top:-5rem;left:1rem;background:white;color:black;padding:1rem;z-index:5}.skip:focus{top:1rem}
+  .hero{display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:2rem;min-height:690px;padding-block:2rem 4rem}.release{color:#53e7ff;font-size:.9rem;font-weight:650;margin-bottom:1rem}.hero h1{font-family:'Arial Black','Segoe UI',sans-serif;font-weight:900;line-height:.94;font-size:clamp(3.2rem,6.1vw,5.7rem);letter-spacing:-.06em}.hero h1 span{color:#fc95de}.lead{font-size:clamp(1.7rem,3vw,2.45rem);line-height:1.2;color:white;margin-top:1.8rem;font-weight:600;letter-spacing:-.025em}.intro{max-width:48ch;margin-block:1.3rem 1.8rem}.download{display:inline-flex;align-items:center;justify-content:space-between;gap:2rem;padding:.95rem 1.4rem;background:#59e6f7;color:#071016;text-decoration:none;font-weight:750;border-radius:4px}.download:hover{background:#a4f5ff}.download span{font-size:1.5rem;line-height:1}.small{font-size:.83rem;margin-top:.8rem;line-height:1.65}.small a{color:#e6e9f5}.text-link{display:inline-block;color:#d2d8ed;margin-top:1.2rem;font-size:.9rem}.art img{width:100%;height:auto;mask-image:linear-gradient(to bottom,#000 86%,transparent)}.art figcaption{font-size:.7rem;color:#788399;text-align:right;margin-top:.4rem}.section{border-top:1px solid #20293c;padding-block:4rem}.heading{display:flex;justify-content:space-between;align-items:end;gap:2rem;margin-bottom:2rem}.heading p{max-width:37ch}.loops{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}.frame{background:black;aspect-ratio:16/9;overflow:hidden;border:1px solid #263247}.frame img{width:100%;height:100%;object-fit:cover}.loops figcaption{display:flex;justify-content:space-between;align-items:start;gap:1rem;padding-top:1rem}.loops p,.screenshots p{font-size:.87rem;margin-top:.5rem;max-width:43ch}.loops button{min-height:44px;white-space:nowrap;border:1px solid #495575;border-radius:3px;background:#0d1424;color:#e9edfa;padding:.45rem .65rem;font-size:.8rem;cursor:pointer}.loops button:hover{border-color:#65dfea}.screenshots{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:3rem}.screenshots img{height:auto;border:1px solid #263247}.screenshots h3{margin-top:1rem;font-size:1rem}.split{display:grid;grid-template-columns:.9fr 1.3fr;gap:5rem}.split>div>p:not(.release){margin-top:1.3rem;max-width:43ch}ol{margin:0;padding-left:1.5rem;display:grid;gap:1.8rem}li{padding-left:.7rem}li::marker{color:#ff9adf;font-weight:750}li p{margin-top:.5rem}.keys{display:flex;gap:.9rem;padding-bottom:1.5rem}.keys>span{display:flex;flex-direction:column;align-items:center;gap:.45rem}.keys kbd{display:grid;place-items:center;width:58px;height:54px;font:700 1.8rem 'Segoe UI',sans-serif;border:1px solid currentColor;background:#10192a;border-radius:5px}.keys small{font-size:.75rem}.yellow{color:#ffdf58}.red{color:#ff7e8f}.green{color:#75e8a0}.blue{color:#7cb8ff}dl{margin:0}dl>div{display:grid;grid-template-columns:125px 1fr;padding:.65rem 0;border-top:1px solid #1d2739;font-size:.9rem}dt{font-weight:650}dd{margin:0;color:#b7bfd2}.answers details{border-top:1px solid #2c3549;padding:1rem 0}.answers summary{cursor:pointer;font-weight:600;line-height:1.5}.answers p{margin-top:.85rem;font-size:.92rem}.answers a{color:#64def3}.feedback{border:1px solid #34405a;padding:2.3rem;margin-block:1rem 4rem;display:flex;align-items:center;justify-content:space-between;gap:3rem;background:#0b1120}.feedback p:not(.release){max-width:58ch;margin-top:1rem}.feedback .download{flex-shrink:0}footer{border-top:1px solid #20293c;display:flex;justify-content:space-between;align-items:start;gap:2rem;padding-block:2rem;font-size:.8rem}footer p{font-size:.75rem}footer a{color:#ced5e8}
+  @media(max-width:850px){header{flex-direction:column;align-items:start;gap:1rem}nav{flex-wrap:wrap;gap:1rem}.hero{grid-template-columns:1fr;gap:0;min-height:0}.hero h1{font-size:clamp(2.35rem,10.5vw,5rem)}.art{max-width:520px;margin:2rem auto 0;width:100%}.heading{align-items:start;flex-direction:column}.split{grid-template-columns:1fr;gap:2rem}.screenshots{grid-template-columns:1fr}.feedback{flex-direction:column;align-items:start}footer{flex-direction:column}.section{padding-block:3rem}}@media(max-width:570px){.loops{grid-template-columns:1fr;gap:2.5rem}.loops figcaption{flex-direction:column}.hero{padding-bottom:2rem}.art{max-width:380px}.feedback{padding:1.5rem}.keys{gap:.65rem}dl>div{grid-template-columns:110px 1fr}.download{width:100%;gap:1rem}}@media(prefers-reduced-motion:reduce){:global(html){scroll-behavior:auto}}
 </style>

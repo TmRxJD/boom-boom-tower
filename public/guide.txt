@@ -1,0 +1,49 @@
+BOOM BOOM TOWER - WINDOWS PLAYTEST, 2026-10-21
+
+GET STARTED
+Extract the complete ZIP into a writable folder, then open Play.exe or Play.cmd.
+Keep the included folders beside it. Pick a song and a difficulty.
+The 10 original tracks in Songs include music and are ready to play. For other
+songs the audio panel opens if a recording is missing. Add your recording and check
+the timing prompt. You can also try patterns without music.
+
+CONTROLS
+Yellow: Up arrow / W. Red: Right arrow / D.
+Green: Down arrow / S. Blue: Left arrow / A.
+Golden Tower: Space / left Shift. Black Hole: left Ctrl / B.
+Pause: Escape. Change keyboard/controller controls in Options.
+Keep the matching input pressed through a hold note's tail.
+
+MUSIC
+The 10 original tracks include music. No recordings are distributed for
+Tower OST, Boom Boom Rocket originals, or custom songs.
+Bring a recording you have permission to play. Use the same song version.
+Add audio / Edit audio lets you choose, replace, or unlink a recording.
+The game shows exact search terms with a Copy button.
+Waveform matching checks passages and leading silence, not only duration.
+Uncertain matches ask for confirmation. YouTube requires internet, WebView2,
+and manual timing confirmation. Local audio is best for reliable timing.
+
+MODES
+Standard: normal play. Practice: no fail and adjustable music speed.
+Autoplay: watch a perfect performance. Endurance: repeat at increasing speed.
+Playlists: build a queue; a short grace period separates each song.
+
+IMPORTS
+Use compatible song packs, supported Beat Saber ZIPs, BeatSaver links/keys,
+or supported Beat Saber archives from GitHub. The game asks before omitting
+versions whose source lacks enough distinct detail.
+
+SAVES AND REQUIREMENTS
+Keep the user folder when upgrading; it contains settings and local scores.
+Online submissions are disabled in this public test build.
+Requires 64-bit Windows 10/11 and a modern graphics driver.
+If a VCRUNTIME DLL is missing, install Microsoft's VC++ x64 runtime:
+https://aka.ms/vs/17/release/vc_redist.x64.exe
+Optional YouTube playback needs Microsoft Edge WebView2.
+This unsigned playtest may show a Windows reputation prompt.
+
+FEEDBACK
+https://github.com/TmRxJD/boom-boom-tower/issues/new?template=playtest.yml
+Include build, song, difficulty, approximate time, and controls used.
+For slowdowns include graphics card, resolution, and whether a bonus was active.
