@@ -26,13 +26,11 @@
       {#each loops as loop}
         <figure>
           <div class="frame">
-            <img
-              src={`${media}${loop.id}.${playing === loop.id ? 'gif' : 'webp'}`}
-              width="640"
-              height="360"
-              alt={loop.alt}
-              loading="lazy"
-            />
+            {#if playing === loop.id}
+              <video src={`${media}${loop.id}.mp4`} poster={`${media}${loop.id}.webp`} width="640" height="360" aria-label={loop.alt} autoplay muted loop playsinline></video>
+            {:else}
+              <img src={`${media}${loop.id}.webp`} width="640" height="360" alt={loop.alt} loading="lazy" />
+            {/if}
           </div>
           <figcaption>
             <div>
@@ -68,7 +66,7 @@
   .loops { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.75rem; }
   figure { display: grid; gap: 1rem; }
   .frame { aspect-ratio: 16 / 9; background: #000; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-  .frame img { width: 100%; height: 100%; object-fit: cover; }
+  .frame img, .frame video { width: 100%; height: 100%; object-fit: cover; }
   figcaption { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
   figcaption p { font-size: 0.95rem; margin-top: 0.3rem; }
   figcaption .btn { min-height: 44px; padding-inline: 1rem; flex-shrink: 0; font-size: 0.95rem; }

@@ -1,49 +1,61 @@
-BOOM BOOM TOWER - WINDOWS PLAYTEST, 2026-10-21
+Boom Boom Tower
+How to play
 
-GET STARTED
-Extract the complete ZIP into a writable folder, then open Play.exe or Play.cmd.
-Keep the included folders beside it. Pick a song and a difficulty.
-The 10 original tracks in Songs include music and are ready to play. For other
-songs the audio panel opens if a recording is missing. Add your recording and check
-the timing prompt. You can also try patterns without music.
+Getting started
+1. Extract the ZIP and open Play.exe.
+2. Choose a song from Songs. All ten original tracks include music.
+3. Pick a difficulty and press Play.
 
-CONTROLS
-Yellow: Up arrow / W. Red: Right arrow / D.
-Green: Down arrow / S. Blue: Left arrow / A.
-Golden Tower: Space / left Shift. Black Hole: left Ctrl / B.
-Pause: Escape. Change keyboard/controller controls in Options.
-Keep the matching input pressed through a hold note's tail.
+Match each colored rocket as it reaches the line. Keep the matching button
+pressed until a hold note ends. Consecutive hits build your combo.
 
-MUSIC
-The 10 original tracks include music. No recordings are distributed for
-Tower OST, Boom Boom Rocket originals, or custom songs.
+Controller
+Xbox button labels are shown here. You can also use the D-pad.
+Yellow: Y or D-pad up. Red: B or D-pad right.
+Green: A or D-pad down. Blue: X or D-pad left.
+Golden Tower: right trigger or right bumper.
+Black Hole: left trigger or left bumper. Pause: Start.
+Follow the button hints at the bottom of the menus.
+
+Keyboard
+Yellow: Up arrow or W. Red: Right arrow or D.
+Green: Down arrow or S. Blue: Left arrow or A.
+Golden Tower: Space or left Shift. Black Hole: left Ctrl or B.
+Pause: Esc. Change keyboard controls in Options.
+
+Bonuses
+Regular hits charge Golden Tower. Holds charge Black Hole.
+Activate both together to multiply their bonuses.
+
+Ways to play
+Standard: play a song and aim for a better score.
+Practice: slow the song down and play without failing.
+Autoplay: watch the game play the song.
+Endurance: repeat a song as it gets faster.
+Playlists: put songs in the order you want to play them.
+
+Adding music
+The ten original tracks include music. Other songs need a recording from you.
 Bring a recording you have permission to play. Use the same song version.
-Add audio / Edit audio lets you choose, replace, or unlink a recording.
-The game shows exact search terms with a Copy button.
-Waveform matching checks passages and leading silence, not only duration.
-Uncertain matches ask for confirmation. YouTube requires internet, WebView2,
-and manual timing confirmation. Local audio is best for reliable timing.
+Choose a song, then Add audio to select a music file or paste a YouTube link.
+Choose Edit audio to change or remove it later.
+The audio panel provides search terms with a Copy button.
+For YouTube, you need internet. Check that the music lines up before playing.
 
-MODES
-Standard: normal play. Practice: no fail and adjustable music speed.
-Autoplay: watch a perfect performance. Endurance: repeat at increasing speed.
-Playlists: build a queue; a short grace period separates each song.
+Adding songs
+Choose Import to add songs from BeatSaver, a supported GitHub link, or a song pack.
 
-IMPORTS
-Use compatible song packs, supported Beat Saber ZIPs, BeatSaver links/keys,
-or supported Beat Saber archives from GitHub. The game asks before omitting
-versions whose source lacks enough distinct detail.
+Scores and progress
+Progress is saved on your PC in the user folder beside the game.
+Keep that folder when updating. Online leaderboards are not available in this playtest.
 
-SAVES AND REQUIREMENTS
-Keep the user folder when upgrading; it contains settings and local scores.
-Online submissions are disabled in this public test build.
-Requires 64-bit Windows 10/11 and a modern graphics driver.
-If a VCRUNTIME DLL is missing, install Microsoft's VC++ x64 runtime:
+Help opening the game
+Use a 64-bit Windows 10 or 11 PC with an up-to-date graphics driver.
+Make sure the ZIP is fully extracted before opening Play.exe.
+If Windows reports a missing VCRUNTIME DLL, install Microsoft's VC++ x64 runtime:
 https://aka.ms/vs/17/release/vc_redist.x64.exe
-Optional YouTube playback needs Microsoft Edge WebView2.
-This unsigned playtest may show a Windows reputation prompt.
+If YouTube playback asks for WebView2, get it from Microsoft:
+https://developer.microsoft.com/microsoft-edge/webview2/
 
-FEEDBACK
+Share feedback
 https://github.com/TmRxJD/boom-boom-tower/issues/new?template=playtest.yml
-Include build, song, difficulty, approximate time, and controls used.
-For slowdowns include graphics card, resolution, and whether a bonus was active.
