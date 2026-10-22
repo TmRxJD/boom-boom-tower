@@ -8,7 +8,7 @@
     <div>
       <p class="eyebrow">Feedback</p>
       <h2 id="feedback-title">Tell us how it played</h2>
-      <p>Include the song, the difficulty, roughly when it happened, and what you saw.</p>
+      <p>Include the song, the difficulty, where it happened, and what you saw. The form needs a free GitHub account.</p>
     </div>
     <div class="buttons">
       <a class="btn btn-gold" href={site.feedbackUrl}>Share feedback <span aria-hidden="true">↗</span></a>

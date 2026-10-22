@@ -13,11 +13,11 @@
         <a class="btn btn-primary" href={`${base}play/`}>Play in your browser <span aria-hidden="true">→</span></a>
         <a class="btn btn-ghost" href={site.downloadUrl}>Download for Windows <span aria-hidden="true">↓</span></a>
       </div>
-      <p class="fine">Browser version: new, about 80 MB on first load. Windows version: unsigned test build.</p>
+      <p class="fine">Browser version: about 80 MB on first load. Windows version: ZIP of about 90 MB, unsigned.</p>
       <ul class="facts" aria-label="At a glance">
         <li>4 difficulties</li>
         <li>10 original tracks</li>
-        <li>Keyboard, pad or touch</li>
+        <li>Keyboard, controller or touch</li>
       </ul>
     </div>
     <figure class="shot">

@@ -17,7 +17,7 @@
         <li><a href="#features">Features</a></li>
         <li><a href="#music">Music</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a class="cta" href={`${base}play/`}>Play now</a></li>
+        <li><a class="cta" href={`${base}play/`}>Play in browser</a></li>
       </ul>
     </nav>
   </div>
@@ -34,5 +34,5 @@
   nav a:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
   nav a.cta { background: var(--cyan); color: var(--ink); }
   nav a.cta:hover { background: #a7f1ff; color: var(--ink); }
-  @media (max-width: 720px) { .bar { position: static; } nav li:not(:last-child) { display: none; } }
+  @media (max-width: 720px) { .bar { position: static; } nav a { padding: 0 0.6rem; } }
 </style>

@@ -2,16 +2,16 @@
   const features = [
     { title: 'Four difficulties', text: 'Easy to Expert on every song, plus Practice, Endurance and Autoplay modes.' },
     { title: 'Holds and bonuses', text: 'Hold long notes to charge Black Hole. Clean hits build Golden Tower.' },
-    { title: 'Playlists', text: 'Queue songs and play them back to back.' },
+    { title: 'Playlists', text: 'Line up songs and play them in a row.' },
     { title: 'Firework collection', text: 'Unlock new explosion shapes and choose which ones appear.' },
     { title: 'Add your own songs', text: 'Import chart files, BeatSaver links or Beat Saber ZIPs, or build charts from any audio file.' },
-    { title: 'Your controls', text: 'Keyboard, controller or touch, with rebindable keys and an audio offset.' },
+    { title: 'Your controls', text: 'Keyboard, controller or touch, with remappable keys and an adjustable audio delay.' },
   ];
 </script>
 
 <section class="section" id="features" aria-labelledby="features-title">
   <div class="container">
-    <p class="eyebrow">Features</p>
+    <p class="eyebrow">What you get</p>
     <h2 id="features-title">Features</h2>
     <ul class="grid">
       {#each features as feature}

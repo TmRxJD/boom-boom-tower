@@ -1,7 +1,7 @@
 <section class="section" id="how" aria-labelledby="how-title">
   <div class="container split">
     <div>
-      <p class="eyebrow">How to play</p>
+      <p class="eyebrow">Quick start</p>
       <h2 id="how-title">How to play</h2>
       <ol class="steps">
         <li>
@@ -18,7 +18,7 @@
         </li>
       </ol>
     </div>
-    <div class="controls" aria-labelledby="controls-title">
+    <div class="controls" role="group" aria-labelledby="controls-title">
       <h3 id="controls-title">Controls</h3>
       <div class="keys">
         <span class="yellow"><kbd aria-hidden="true">↑</kbd><small>Yellow · Up or W</small></span>
@@ -31,7 +31,7 @@
         <div><dt>Black Hole</dt><dd>Left Ctrl or B</dd></div>
         <div><dt>Pause</dt><dd>Escape</dd></div>
         <div><dt>Controller</dt><dd>Face buttons play, shoulder buttons fire bonuses</dd></div>
-        <div><dt>Touch</dt><dd>Tap the pads on screen</dd></div>
+        <div><dt>Touch</dt><dd>Tap the pads on screen, with the phone held sideways</dd></div>
       </dl>
       <p class="note">Keys can be changed in Settings.</p>
     </div>

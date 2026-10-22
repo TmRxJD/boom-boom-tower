@@ -1,7 +1,7 @@
 <section class="section" id="music" aria-labelledby="music-title">
   <div class="container split">
     <div>
-      <p class="eyebrow">Your music</p>
+      <p class="eyebrow">Your library</p>
       <h2 id="music-title">Your music</h2>
       <p class="lede">
         The ten original tracks include their music. For every other song, add a recording you have
@@ -22,11 +22,11 @@
     <div class="answers">
       <details open>
         <summary>Can I play in my browser?</summary>
-        <p>Yes. It is the same game, but new and rough in places. Scores and settings stay in your browser. The first load is about 80 MB. Use a wide screen.</p>
+        <p>Yes. It is the same game, but new and rough in places. Scores and settings stay in your browser. The first load is about 80 MB. On a phone, hold it sideways.</p>
       </details>
       <details>
         <summary>Can I import more songs?</summary>
-        <p>Yes. Use Import for chart files, BeatSaver links and Beat Saber ZIPs. Bombs, obstacles and arcs are skipped.</p>
+        <p>Yes. Use Import for chart files, BeatSaver links and Beat Saber ZIPs. Beat Saber bombs, walls and arcs are skipped.</p>
       </details>
       <details>
         <summary>Where are my scores?</summary>
@@ -34,7 +34,7 @@
       </details>
       <details>
         <summary>What does the Windows build need?</summary>
-        <p>A 64-bit Windows 10 or 11 PC with a recent graphics driver. If a VCRUNTIME DLL is missing, install the <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">Microsoft Visual C++ x64 runtime</a>. YouTube playback also needs <a href="https://developer.microsoft.com/microsoft-edge/webview2/">WebView2</a>. The build is unsigned, so Windows may warn you.</p>
+        <p>A 64-bit Windows 10 or 11 PC with a recent graphics driver. If Windows reports a missing VCRUNTIME file, install the <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">Microsoft Visual C++ x64 runtime</a>. YouTube playback also needs <a href="https://developer.microsoft.com/microsoft-edge/webview2/">WebView2</a>. The build is unsigned, so Windows may warn you.</p>
       </details>
     </div>
   </div>
