@@ -1,0 +1,78 @@
+# Builds the Linux and macOS game from the private source repo and attaches the packages to a
+# release here. Needs the repository secret SOURCE_REPO_TOKEN: a fine-grained token with
+# read-only "Contents" access to TmRxJD/boom-boom-tower-source.
+name: desktop-release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release that already holds the Windows zip
+        default: playtest-2026-10-21
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: ubuntu-22.04, name: Linux-x64, target: x86_64-unknown-linux-gnu }
+          - { os: macos-14, name: macOS-arm64, target: aarch64-apple-darwin }
+          - { os: macos-15-intel, name: macOS-x64, target: x86_64-apple-darwin }
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: TmRxJD/boom-boom-tower-source
+          token: ${{ secrets.SOURCE_REPO_TOKEN }}
+      - name: Linux dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libasound2-dev libudev-dev libwebkit2gtk-4.1-dev libxdo-dev libgtk-3-dev libdbus-1-dev
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: "1.98.1"
+          targets: ${{ matrix.target }}
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release -p bbt-app --target ${{ matrix.target }}
+      - run: tar czf bbt-app-${{ matrix.name }}.tar.gz -C target/${{ matrix.target }}/release bbt-app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bbt-app-${{ matrix.name }}
+          path: bbt-app-${{ matrix.name }}.tar.gz
+
+  publish:
+    needs: build
+    runs-on: ubuntu-22.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TAG: ${{ inputs.tag }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: bin
+      - name: Fetch the game content from the Windows package
+        run: |
+          gh release download "$TAG" -R "$GITHUB_REPOSITORY" -p BoomBoomTower-Windows-x64.zip
+          unzip -q BoomBoomTower-Windows-x64.zip -d win
+          src=$(dirname "$(find win -name bbt-app.exe | head -1)")
+          echo "SRC=$src" >> "$GITHUB_ENV"
+      - name: Assemble and upload
+        run: |
+          for name in Linux-x64 macOS-arm64 macOS-x64; do
+            d=BoomBoomTower-$name
+            mkdir "$d"
+            tar xzf bin/bbt-app-$name/bbt-app-$name.tar.gz -C "$d"
+            for part in data library music sfx user licenses OPEN-SOURCE-NOTICES.txt; do cp -r "$SRC/$part" "$d/"; done
+            printf '#!/bin/sh\ncd "$(dirname "$0")" && exec ./bbt-app --library library --sfx sfx "$@"\n' > "$d/play.sh"
+            chmod +x "$d/play.sh" "$d/bbt-app"
+            if [ "${name#macOS}" != "$name" ]; then
+              printf 'BOOM BOOM TOWER - MACOS PLAYTEST\n\nRun ./play.sh from Terminal. The app is unsigned; clear the quarantine flag once:\n  xattr -dr com.apple.quarantine .\nKeep bbt-app, data/, library/, sfx/, music/ and user/ together.\nScores, settings and imports live in user/. Tower OST, BBR and custom recordings are not included; link your own local recording in the game.\n' > "$d/README.txt"
+            else
+              printf 'BOOM BOOM TOWER - LINUX X64 PLAYTEST\n\nRun ./play.sh. Keep bbt-app, data/, library/, sfx/, music/ and user/ together.\nNeeds a graphics driver and ALSA or PipeWire audio; libwebkit2gtk-4.1 only for YouTube links.\nScores, settings and imports live in user/. Tower OST, BBR and custom recordings are not included; link your own local recording in the game.\n' > "$d/README.txt"
+            fi
+            tar czf "$d.tar.gz" "$d"
+            gh release upload "$TAG" "$d.tar.gz" -R "$GITHUB_REPOSITORY" --clobber
+          done
