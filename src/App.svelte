@@ -10,10 +10,10 @@
 </script>
 
 <svelte:head>
-  <title>Boom Boom Tower — a fireworks rhythm game for Windows and the browser</title>
-  <meta name="description" content="A four-button rhythm game where every song becomes a fireworks show. Play the free playtest in your browser or download it for Windows." />
+  <title>Boom Boom Tower — a fireworks rhythm game for desktop and the browser</title>
+  <meta name="description" content="A four-button rhythm game where every song becomes a fireworks show. Play the free playtest in your browser or download it for Windows, Mac or Linux." />
   <meta property="og:title" content="Boom Boom Tower" />
-  <meta property="og:description" content="Hit the melody. Light up the sky. Play in your browser or download the Windows playtest." />
+  <meta property="og:description" content="Hit the melody. Light up the sky. Play in your browser or download the playtest for Windows, Mac or Linux." />
   <meta property="og:image" content="https://tmrxjd.github.io/boom-boom-tower/media/icon-art.webp" />
   <meta property="og:type" content="website" />
 </svelte:head>

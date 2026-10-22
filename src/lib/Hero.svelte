@@ -6,14 +6,15 @@
 <section class="hero" id="top" aria-labelledby="title">
   <div class="container grid">
     <div class="copy">
-      <p class="eyebrow">Free playtest · Windows and browser</p>
+      <p class="eyebrow">Free playtest · Windows, Mac, Linux and browser</p>
       <h1 id="title">Hit the melody. <span>Light up the sky.</span></h1>
       <p class="lede">A four-button rhythm game where every song becomes a fireworks show.</p>
       <div class="actions">
         <a class="btn btn-primary" href={`${base}play/`}>Play in your browser <span aria-hidden="true">→</span></a>
         <a class="btn btn-ghost" href={site.downloadUrl}>Download for Windows <span aria-hidden="true">↓</span></a>
       </div>
-      <p class="fine">Browser version: about 80 MB on first load. Windows version: ZIP of about 90 MB, unsigned.</p>
+      <p class="fine">Also for: {#each site.downloads.slice(1) as d, i}{i ? ', ' : ''}<a href={d.file}>{d.label}</a>{/each}.</p>
+      <p class="fine">Browser version: about 80 MB on first load. Desktop downloads are about 100 MB and unsigned.</p>
       <ul class="facts" aria-label="At a glance">
         <li>4 difficulties</li>
         <li>10 original tracks</li>
