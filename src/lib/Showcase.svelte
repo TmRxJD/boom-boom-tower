@@ -1,11 +1,28 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   const base = import.meta.env.BASE_URL;
   const media = `${base}media/`;
-  let playing = $state<string | null>(null);
+  let paused = $state<Record<string, boolean>>({});
+  let videos: Record<string, HTMLVideoElement> = {};
+  function toggle(id: string) {
+    const video = videos[id];
+    if (!video) return;
+    paused[id] = !video.paused;
+    if (video.paused) void video.play();
+    else video.pause();
+  }
   const loops = [
     { id: 'rhythm', title: 'Follow the melody', text: 'Four colors, flowing patterns, a firework on every hit.', alt: 'Colored rockets rising toward the target line below a glowing tower' },
     { id: 'eclipse', title: 'Combine the bonuses', text: 'Fire Golden Tower and Black Hole together for a huge multiplier.', alt: 'A golden swirl of fireworks during a bonus run, with “Perfect” on screen' },
   ];
+  // People who ask their system for less motion get still posters; the button starts a video.
+  onMount(() => {
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    for (const [id, video] of Object.entries(videos)) {
+      video.pause();
+      paused[id] = true;
+    }
+  });
   const shots = [
     { file: 'songs', title: 'Pick a song', text: 'Browse your library and choose from four difficulties.', alt: 'The song list with a song card showing four difficulty buttons and play modes' },
     { file: 'playlists', title: 'Build playlists', text: 'Queue songs and play them back to back.', alt: 'The playlist screen with a queue of songs and a list of songs to add' },
@@ -20,25 +37,21 @@
         <p class="eyebrow">Gameplay</p>
         <h2 id="gameplay-title">See it in action</h2>
       </div>
-      <p>Real captures from the game. Loops play only when you press the button.</p>
+      <p>Real captures from the game, looping silently. Each one has a pause button.</p>
     </header>
     <div class="loops">
       {#each loops as loop}
         <figure>
           <div class="frame">
-            {#if playing === loop.id}
-              <video src={`${media}${loop.id}.mp4`} poster={`${media}${loop.id}.webp`} width="640" height="360" aria-label={loop.alt} autoplay muted loop playsinline></video>
-            {:else}
-              <img src={`${media}${loop.id}.webp`} width="640" height="360" alt={loop.alt} loading="lazy" />
-            {/if}
+            <video bind:this={videos[loop.id]} src={`${media}${loop.id}.mp4`} poster={`${media}${loop.id}.webp`} width="640" height="360" aria-label={loop.alt} autoplay muted loop playsinline></video>
           </div>
           <figcaption>
             <div>
               <h3>{loop.title}</h3>
               <p>{loop.text}</p>
             </div>
-            <button class="btn btn-ghost" onclick={() => (playing = playing === loop.id ? null : loop.id)} aria-label={`${playing === loop.id ? 'Stop loop' : 'Play loop'}: ${loop.title}`}>
-              {playing === loop.id ? 'Stop loop' : 'Play loop'}
+            <button class="btn btn-ghost" onclick={() => toggle(loop.id)} aria-label={`${paused[loop.id] ? 'Play' : 'Pause'} video: ${loop.title}`}>
+              {paused[loop.id] ? 'Play' : 'Pause'}
             </button>
           </figcaption>
         </figure>
