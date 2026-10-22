@@ -2,40 +2,39 @@
   <div class="container split">
     <div>
       <p class="eyebrow">Your music</p>
-      <h2 id="music-title">Ten tracks included.<br />Bring the rest.</h2>
+      <h2 id="music-title">Your music</h2>
       <p class="lede">
-        The ten original tracks come with their music. Recordings for the Tower OST, Boom Boom Rocket
-        originals and custom songs are not distributed: bring a copy you have permission to play, and the
-        game shows exact search terms with a Copy button.
+        The ten original tracks include their music. For every other song, add a recording you have
+        permission to play. The game shows what to search for.
       </p>
     </div>
     <ol class="flow">
-      <li><b>Pick a song</b><span>Choose Add audio or Edit audio on its card.</span></li>
-      <li><b>Choose your file</b><span>Local audio works best for steady timing. YouTube links work too, with a manual timing check.</span></li>
-      <li><b>Confirm the match</b><span>The game compares the waveform and leading silence, and asks when it is unsure.</span></li>
+      <li><b>Pick a song</b><span>Choose Add audio on its card.</span></li>
+      <li><b>Choose a file</b><span>A local file keeps timing steadiest. YouTube links work too.</span></li>
+      <li><b>Confirm the match</b><span>The game compares it with the song and asks if it is unsure.</span></li>
     </ol>
   </div>
 </section>
 
 <section class="section" id="faq" aria-labelledby="faq-title">
   <div class="container faq">
-    <h2 id="faq-title">Questions</h2>
+    <h2 id="faq-title">FAQ</h2>
     <div class="answers">
       <details open>
         <summary>Can I play in my browser?</summary>
-        <p>Yes. The browser version is the same game, new and still rough in places. It keeps your scores and settings in the browser and downloads about 80 MB the first time. Landscape screens work best.</p>
+        <p>Yes. It is the same game, but new and rough in places. Scores and settings stay in your browser. The first load is about 80 MB. Use a wide screen.</p>
       </details>
       <details>
         <summary>Can I import more songs?</summary>
-        <p>Use Import for compatible song packs, BeatSaver links or keys, and supported Beat Saber ZIPs. Colored attacks are adapted; bombs, obstacles and saber-motion arcs are not.</p>
+        <p>Yes. Use Import for chart files, BeatSaver links and Beat Saber ZIPs. Bombs, obstacles and arcs are skipped.</p>
       </details>
       <details>
         <summary>Where are my scores?</summary>
-        <p>On Windows, scores and settings live in the user folder beside the game; keep it when upgrading. In the browser they stay in that browser. This public playtest uses local scores only.</p>
+        <p>On your device only. Windows keeps them in the user folder beside the game, so keep it when you update. The browser keeps them in that browser. There are no online scores.</p>
       </details>
       <details>
         <summary>What does the Windows build need?</summary>
-        <p>A 64-bit Windows 10 or 11 PC with a modern graphics driver. If a VCRUNTIME DLL is missing, install the <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">Microsoft Visual C++ x64 runtime</a>. YouTube playback also needs <a href="https://developer.microsoft.com/microsoft-edge/webview2/">WebView2</a>. This is an unsigned test build.</p>
+        <p>A 64-bit Windows 10 or 11 PC with a recent graphics driver. If a VCRUNTIME DLL is missing, install the <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">Microsoft Visual C++ x64 runtime</a>. YouTube playback also needs <a href="https://developer.microsoft.com/microsoft-edge/webview2/">WebView2</a>. The build is unsigned, so Windows may warn you.</p>
       </details>
     </div>
   </div>

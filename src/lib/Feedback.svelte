@@ -6,14 +6,12 @@
 <section class="feedback" aria-labelledby="feedback-title">
   <div class="container inner">
     <div>
-      <p class="eyebrow">Help shape the next build</p>
-      <h2 id="feedback-title">How did it feel?</h2>
-      <p>A song, a difficulty, a rough timestamp and what happened are the most useful details. Awkward patterns, missing melody notes, controller navigation and slowdowns are all welcome.</p>
+      <p class="eyebrow">Feedback</p>
+      <h2 id="feedback-title">Tell us how it played</h2>
+      <p>Include the song, the difficulty, roughly when it happened, and what you saw.</p>
     </div>
     <div class="buttons">
       <a class="btn btn-gold" href={site.feedbackUrl}>Share feedback <span aria-hidden="true">↗</span></a>
-      <a class="btn btn-ghost" href={`${base}play/`}>Play in your browser <span aria-hidden="true">→</span></a>
-      <a class="btn btn-ghost" href={site.downloadUrl}>Download for Windows <span aria-hidden="true">↓</span></a>
     </div>
   </div>
 </section>

@@ -1,18 +1,18 @@
 <script lang="ts">
   const features = [
-    { title: 'Four difficulties', text: 'Easy to Expert on every song. Practice slows the music and cannot be failed; Endurance loops faster each lap; Autoplay shows a perfect run.' },
-    { title: 'Hold notes and bonuses', text: 'Sustain long tones to charge Black Hole, build Golden Tower with clean hits, and fire both together for the big multiplier.' },
-    { title: 'Playlists', text: 'Queue your favorites and move straight from one song to the next with a short breather in between.' },
-    { title: 'Fireworks collection', text: 'Hit the marked rockets and finish songs to unlock new explosion shapes, then choose which ones appear.' },
-    { title: 'Bring any song', text: 'Import compatible song packs, BeatSaver links or keys, and Beat Saber ZIPs. The game builds playable versions and asks before leaving any out.' },
-    { title: 'Plays your way', text: 'Keyboard, game controller or touch. Rebind every key, and set the audio offset to match your setup.' },
+    { title: 'Four difficulties', text: 'Easy to Expert on every song, plus Practice, Endurance and Autoplay modes.' },
+    { title: 'Holds and bonuses', text: 'Hold long notes to charge Black Hole. Clean hits build Golden Tower.' },
+    { title: 'Playlists', text: 'Queue songs and play them back to back.' },
+    { title: 'Firework collection', text: 'Unlock new explosion shapes and choose which ones appear.' },
+    { title: 'Add your own songs', text: 'Import chart files, BeatSaver links or Beat Saber ZIPs, or build charts from any audio file.' },
+    { title: 'Your controls', text: 'Keyboard, controller or touch, with rebindable keys and an audio offset.' },
   ];
 </script>
 
 <section class="section" id="features" aria-labelledby="features-title">
   <div class="container">
     <p class="eyebrow">Features</p>
-    <h2 id="features-title">Everything a rhythm game needs,<br />and a few fireworks.</h2>
+    <h2 id="features-title">Features</h2>
     <ul class="grid">
       {#each features as feature}
         <li>

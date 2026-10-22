@@ -34,5 +34,5 @@
   nav a:hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
   nav a.cta { background: var(--cyan); color: var(--ink); }
   nav a.cta:hover { background: #a7f1ff; color: var(--ink); }
-  @media (max-width: 720px) { .inner { padding-block: 0.5rem; } nav a { padding: 0 0.55rem; } }
+  @media (max-width: 720px) { .bar { position: static; } nav li:not(:last-child) { display: none; } }
 </style>
