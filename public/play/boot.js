@@ -1,8 +1,15 @@
 import init, {
   load_pack, seed_file, start, drain_changes, declare_remote,
   take_audio_requests, begin_audio, push_audio, finish_audio, reject_audio, unlock_audio, read_held,
+  setup_account, account_journal, receive_progress,
 } from "./pkg/bbt_web.js";
 import { wasmResponse } from "./wasm.js";
+import { Account, bindAccountDialog } from "./account.js";
+
+let account;
+let accountMessage;
+let storagePrefix = ""; // Existing unprefixed files remain the guest's files.
+let savedJournal = "";
 
 const message = document.getElementById("message");
 const fill = document.getElementById("fill");
@@ -65,7 +72,11 @@ const store = (() => {
         const request = db.transaction("files").objectStore("files").openCursor();
         request.onsuccess = () => {
           const cursor = request.result;
-          if (cursor) { out.push([cursor.key, cursor.value]); cursor.continue(); } else resolve(out);
+          if (cursor) {
+            const key = String(cursor.key);
+            if (storagePrefix ? key.startsWith(storagePrefix) : key.startsWith("user/")) out.push([key.slice(storagePrefix.length), cursor.value]);
+            cursor.continue();
+          } else resolve(out);
         };
         request.onerror = () => reject(request.error);
       });
@@ -73,7 +84,8 @@ const store = (() => {
     save(changes) {
       return run("readwrite", (files) => {
         for (const [path, bytes] of changes) {
-          if (bytes) files.put(bytes, path); else files.delete(path);
+          const key = `${storagePrefix}${path}`;
+          if (bytes) files.put(bytes, key); else files.delete(key);
         }
       });
     },
@@ -81,13 +93,39 @@ const store = (() => {
 })();
 
 function startSaving() {
-  const flush = () => {
+  const flush = async () => {
     const changes = drain_changes().filter(([path]) => path.startsWith("user/"));
-    if (changes.length) store.save(changes).catch((error) => console.error("saving failed", error));
+    const journal = account_journal();
+    if (journal && journal !== savedJournal) {
+      changes.push(["user/account-progress.json", new TextEncoder().encode(journal)]);
+    }
+    if (changes.length) await store.save(changes);
+    savedJournal = journal;
   };
-  setInterval(flush, 1000);
-  addEventListener("pagehide", flush);
-  document.addEventListener("visibilitychange", () => { if (document.hidden) flush(); });
+  const persist = () => { flush().catch(error => { accountMessage.textContent = `Saving failed: ${error.message}`; }); };
+  setInterval(persist, 1000);
+  addEventListener("pagehide", persist);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) persist(); });
+  return flush;
+}
+
+function startSyncing() {
+  let busy = false;
+  const sync = async () => {
+    if (busy || !account.uid || !account.config.progressFunction) return;
+    busy = true;
+    try {
+      const journal = JSON.parse(account_journal());
+      // Rust applies remote pages only in menus. Never queue another page while playing.
+      if (account.waiting(journal.cursor)) return;
+      const page = await account.sync({ version: 1, after: journal.cursor, operation: journal.pending[0] ?? null }, journal.owner_id);
+      receive_progress(JSON.stringify(page));
+      accountMessage.textContent = "Progress synced to your account.";
+    } catch (error) { accountMessage.textContent = error.message; }
+    finally { busy = false; }
+  };
+  sync();
+  setInterval(sync, 3000);
 }
 
 // ---- Recordings: fetched here, decoded in a worker, handed to the game in small pieces. ----
@@ -140,24 +178,39 @@ const timing = new URLSearchParams(location.search).has("timing");
 const mark = (name) => { performance.mark(name); if (timing) console.log(`[timing] ${name} ${performance.now().toFixed(0)} ms`); };
 
 try {
+  const config = await fetch("./account-config.json").then(response => { if (!response.ok) throw new Error("Account configuration could not load"); return response.json(); });
+  account = new Account(config);
+  accountMessage = bindAccountDialog(account);
+  try { await account.restore(); } catch (error) { accountMessage.textContent = error.message; }
+  if (account.uid) storagePrefix = `account:${encodeURIComponent(account.uid)}:`;
   progress("Loading engine…", 0.1);
   const wasm = init({ module_or_path: wasmResponse("./pkg/bbt_web_bg.wasm.gz") });
   if (timing) wasm.then((exports) => { globalThis.bbtMemory = () => exports.memory.buffer.byteLength; });
   progress("Loading songs…", 0.3);
   const pack = fetchBytes("./game.zip");
-  const saved = store.restore().catch(() => []);
+  const saved = store.restore();
   const music = fetch("./music/index.json").then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
   await wasm;
   mark("engine ready");
   load_pack(await pack);
   mark("songs unpacked");
   for (const [name, length] of Object.entries(await music)) declare_remote(`music/${name}`, length);
-  for (const [path, bytes] of await saved) seed_file(path, bytes);
+  const restored = await saved;
+  for (const [path, bytes] of restored) seed_file(path, bytes);
+  if (account.uid) {
+    const journal = restored.find(([path]) => path === "user/account-progress.json");
+    const ownedText = path => {
+      const entry = restored.find(([name]) => name === path);
+      return entry ? new TextDecoder().decode(entry[1]) : "";
+    };
+    setup_account(account.uid, journal ? new TextDecoder().decode(journal[1]) : "", crypto.randomUUID(), ownedText("user/scores.json"), ownedText("user/settings.json"));
+  }
   progress("Starting…", 0.9);
   mark("starting");
   start(location.search);
   mark("started");
-  startSaving();
+  account.beforeNavigate = startSaving();
+  startSyncing();
   serveRecordings();
   status.classList.add("done");
   document.getElementById("bbt-canvas").focus();

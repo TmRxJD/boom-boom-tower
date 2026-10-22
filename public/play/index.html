@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Boom Boom Tower</title>
 <link rel="icon" href="data:,">
@@ -26,6 +27,17 @@
   button:focus-visible, #bbt-canvas:focus-visible { outline: 3px solid #5fe3ff; outline-offset: 3px; }
   .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   #fatal button { font: inherit; padding: 10px 22px; border-radius: 8px; border: 1px solid #7f9bff; background: #11162e; color: #cfd6ff; cursor: pointer; justify-self: center; }
+  #account-dialog { width: min(420px, calc(100vw - 64px)); max-height: calc(100dvh - 64px); overflow: auto; border: 1px solid #56669d; border-radius: 16px; padding: 20px; background: #11162e; color: #e0e6ff; }
+  #account-dialog::backdrop { background: #05060cdd; }
+  #account-dialog h2 { margin-top: 0; }
+  #account-dialog form, #account-dialog label { display: grid; gap: 8px; }
+  #account-dialog form { gap: 10px; }
+  #account-dialog form button { margin-top: 0; }
+  #account-dialog input, #account-dialog button { min-height: 44px; box-sizing: border-box; font: inherit; border: 1px solid #7f9bff; border-radius: 8px; padding: 10px 14px; background: #080d1a; color: #e0e6ff; }
+  #account-dialog button { cursor: pointer; margin-top: 8px; }
+  #account-dialog button:disabled { opacity: .6; cursor: wait; }
+  #account-dialog [hidden] { display: none; }
+  #account-message { line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -37,6 +49,21 @@
 <div id="rotate" role="alert"><strong>Turn your device sideways</strong><span>Boom Boom Tower is laid out for a wide screen.</span></div>
 <div id="status" role="status" aria-live="polite"><div id="message">Loading Boom Boom Tower…</div><div id="bar"><div id="fill"></div></div></div>
 <div id="bbt-youtube"></div>
+<dialog id="account-dialog" aria-labelledby="account-title" aria-describedby="account-message">
+  <h2 id="account-title">Account</h2>
+  <p id="account-message" role="status" aria-live="polite"></p>
+  <form id="account-form">
+    <label>Email<input name="email" type="email" autocomplete="username" required></label>
+    <label>Password<input name="password" type="password" autocomplete="current-password" minlength="8" required></label>
+    <button type="submit" value="login">Sign in</button>
+    <button type="submit" value="create">Create account</button>
+    <button id="account-discord" type="button">Continue with Discord</button>
+  </form>
+  <button id="account-tracker" type="button" hidden>Use my Tracker account</button>
+  <button id="account-link-discord" type="button" hidden>Link Discord to this account</button>
+  <button id="account-logout" type="button" hidden>Sign out</button>
+  <button id="account-close" type="button">Back to game</button>
+</dialog>
 <div id="fatal" role="alert"><p id="fatal-text"></p><button id="reload" type="button">Reload</button></div>
 <div id="farewell"><p>Thanks for playing Boom Boom Tower.</p><button id="again" type="button">Play again</button></div>
 <script type="module" src="./boot.js"></script>

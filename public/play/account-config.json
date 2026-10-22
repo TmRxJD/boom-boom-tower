@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "endpoint": "https://appwrite.athyen.pl/v1",
+  "project": "68190de700097b8f59df",
+  "progressFunction": "bbt-progress-v1",
+  "parentOrigins": ["https://the-tower-run-tracker.com"],
+  "callbacks": ["https://tmrxjd.github.io/boom-boom-tower/play/"]
+}

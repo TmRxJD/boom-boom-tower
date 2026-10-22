@@ -81,7 +81,7 @@
   .loops { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.75rem; }
   figure { display: grid; gap: 1rem; }
   .frame { aspect-ratio: 16 / 9; background: #000; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-  .frame img, .frame video { width: 100%; height: 100%; object-fit: cover; }
+  .frame video { width: 100%; height: 100%; object-fit: cover; }
   figcaption { display: flex; justify-content: space-between; align-items: start; gap: 1rem; }
   figcaption p { font-size: 0.95rem; margin-top: 0.3rem; }
   figcaption .btn { min-height: 44px; padding-inline: 1rem; flex-shrink: 0; font-size: 0.95rem; }
