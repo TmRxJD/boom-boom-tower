@@ -18,6 +18,7 @@ export class Account {
     this.sessionKey = `bbt-session-${config.project}`;
     this.boundUid = null;
     this.bridgeNonce = null;
+    this.parentUid = null;
     this.awaitingCursor = null;
     this.beforeNavigate = async () => {};
     this.reportError = () => {};
@@ -48,7 +49,7 @@ export class Account {
     return data;
   }
 
-  clear() { this.generation++; this.jwt = null; this.uid = null; this.expires = 0; this.awaitingCursor = null; }
+  clear() { this.generation++; this.jwt = null; this.uid = null; this.expires = 0; this.awaitingCursor = null; this.parentUid = null; }
 
   parentOrigin() {
     if (this.host.parent === this.host) return null;
@@ -65,7 +66,14 @@ export class Account {
         if (!acceptsBridge(event, this.host.parent, origin, nonce)) return;
         cleanup();
         if (event.data.error) reject(new Error("Sign in on the Tracker to use shared progress."));
-        else resolve(event.data.jwt ?? null);
+        else if (event.data.jwt === null && event.data.owner_id === null) {
+          this.parentUid = null;
+          resolve(null);
+        } else if (typeof event.data.jwt === "string" && event.data.jwt
+          && typeof event.data.owner_id === "string" && event.data.owner_id.length > 0 && event.data.owner_id.length <= 128) {
+          this.parentUid = event.data.owner_id;
+          resolve(event.data.jwt);
+        } else reject(new Error("The Tracker returned an invalid sign-in response."));
       };
       const timer = setTimeout(() => { cleanup(); reject(new Error("The Tracker did not answer. Open Account to retry.")); }, 10000);
       this.host.addEventListener("message", receive);
@@ -85,10 +93,12 @@ export class Account {
     catch (error) { if (generation === this.generation) this.clear(); throw error; }
     if (generation !== this.generation) throw new Error("Account changed during sign-in");
     if (typeof user.$id !== "string" || !user.$id) { this.clear(); throw new Error("Your account identity could not be verified. Sign in again."); }
+    if (origin && user.$id !== this.parentUid) { this.clear(); throw new Error("Your Tracker account changed. Reload to continue."); }
     if (this.boundUid && this.boundUid !== user.$id) { this.clear(); const error = new Error("Your account changed. Reload to continue."); error.code = "ACCOUNT_CHANGED"; throw error; }
     this.uid = user.$id;
     this.boundUid = user.$id;
     this.expires = Date.now() + 12 * 60 * 1000;
+    if (origin) this.host.parent.postMessage({ type: "bbt:account-ready", nonce: this.bridgeNonce, owner_id: this.uid }, origin);
     return this.uid;
   }
 
@@ -210,7 +220,17 @@ export function bindAccountDialog(account) {
   document.getElementById("account-discord").onclick = () => run(() => account.discord());
   document.getElementById("account-link-discord").onclick = () => run(() => account.discord());
   document.getElementById("account-logout").onclick = () => run(async () => { await account.logout(); await account.beforeNavigate(); location.reload(); });
-  document.getElementById("account-tracker").onclick = () => run(async () => { await account.beforeNavigate(); account.host.sessionStorage.removeItem("bbt-guest-mode"); await account.refresh(); await account.beforeNavigate(); location.reload(); });
+  document.getElementById("account-tracker").onclick = () => run(async () => {
+    await account.beforeNavigate();
+    account.host.sessionStorage.removeItem("bbt-guest-mode");
+    if (await account.refresh()) {
+      await account.beforeNavigate();
+      location.reload();
+    } else {
+      account.host.parent.postMessage({ type: "bbt:sign-in", nonce: account.bridgeNonce }, account.parentOrigin());
+      message.textContent = "Continue signing in with Discord on the Tracker.";
+    }
+  });
   // Native text inputs retain browser keyboard entry; a pad navigates and activates controls.
   let previous = [];
   const pad = () => {
