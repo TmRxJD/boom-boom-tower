@@ -172,6 +172,19 @@ function serveRecordings() {
 }
 
 // Browsers start audio only after a touch, click or key press.
+// A phone hides the browser bars only while the page is fullscreen, which a browser grants only to a tap.
+function fullscreenOnTouch() {
+  const root = document.documentElement;
+  if (!root.requestFullscreen) return;
+  const enter = () => {
+    if (document.fullscreenElement) return;
+    root.requestFullscreen({ navigationUI: "hide" })
+      .then(() => screen.orientation?.lock?.("landscape").catch(() => {}))
+      .catch(() => {});
+  };
+  addEventListener("pointerup", enter, { capture: true });
+}
+
 for (const type of ["pointerdown", "keydown", "touchend"]) addEventListener(type, unlock_audio, { capture: true });
 
 const timing = new URLSearchParams(location.search).has("timing");
@@ -208,6 +221,7 @@ try {
   progress("Starting…", 0.9);
   mark("starting");
   start(location.search, matchMedia("(pointer: coarse)").matches);
+  if (matchMedia("(pointer: coarse)").matches) fullscreenOnTouch();
   mark("started");
   account.beforeNavigate = startSaving();
   startSyncing();
