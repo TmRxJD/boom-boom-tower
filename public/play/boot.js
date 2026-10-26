@@ -207,7 +207,7 @@ try {
   }
   progress("Starting…", 0.9);
   mark("starting");
-  start(location.search);
+  start(location.search, matchMedia("(pointer: coarse)").matches);
   mark("started");
   account.beforeNavigate = startSaving();
   startSyncing();

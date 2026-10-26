@@ -347,16 +347,18 @@ export function setup_account(owner, journal, nonce, restored_scores, restored_s
 
 /**
  * Start the game in the page's `bbt-canvas`. `query` is the page's query string; `song`,
- * `difficulty` and `autoplay` open a song straight away, as the desktop options do.
+ * `difficulty` and `autoplay` open a song straight away, as the desktop options do. `handheld`
+ * is whether the device's main pointer is a finger.
  *
  * # Errors
  * A message when a data file is missing or invalid, or the game cannot start.
  * @param {string} query
+ * @param {boolean} handheld
  */
-export function start(query) {
+export function start(query, handheld) {
     const ptr0 = passStringToWasm0(query, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
     const len0 = WASM_VECTOR_LEN;
-    const ret = wasm.start(ptr0, len0);
+    const ret = wasm.start(ptr0, len0, handheld);
     if (ret[1]) {
         throw takeFromExternrefTable0(ret[0]);
     }
